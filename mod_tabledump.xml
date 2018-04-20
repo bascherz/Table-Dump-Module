@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="3.1.0" client="site" method="upgrade">
+    <name>Table Dump</name>
+    <author>Bruce Scherzinger</author>
+    <version>1.0.0</version>
+    <description>Extracts rows of data from the database and replaces field data in an HTML table structure.</description>
+    <files>
+        <filename>mod_tabledump.xml</filename>
+        <filename module="mod_tabledump">mod_tabledump.php</filename>
+        <filename>index.html</filename>
+        <filename>helper.php</filename>
+        <filename>tmpl/default.php</filename>
+        <filename>tmpl/index.html</filename>
+    </files>
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+				<field
+					name="prepare_content"
+					type="radio"
+					label="Prepare Content:"
+					description="Optionally prepare the content with the Joomla content plugins."
+					class="btn-group btn-group-yesno"
+					default="0"
+					>
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+                <field
+                    name="fieldnames"
+                    description="Enter the field names to be returned from your query separated by whitespace."
+                    type="editor"
+                    editor="None"
+                    height="60"
+                    width="800"
+                    default=""
+                    label="Field Names:" />
+                <field
+                    name="tablequery"
+                    description="MySQL query that returns fields with the names provided above. Query can return multiple rows."
+                    type="editor"
+                    editor="None"
+                    height="40"
+                    width="800"
+                    default=""
+                    label="MySQL Query:" />
+                <field
+                    name="errormessage"
+                    description="HTML to output if the query returns nothing."
+                    type="editor"
+                    editor="None"
+                    height="40"
+                    width="800"
+                    default=""
+                    filter="raw"
+                    label="Error Message:" />
+                <field
+                    name="tablehead"
+                    description="HTML code optionally containing placeholders for your table heading. Do not use field names in this section as they will not be replaced."
+                    type="editor"
+                    editor="None"
+                    height="160"
+                    width="800"
+                    default=""
+                    filter="raw"
+                    label="Table Heading HTML:" />
+                <field
+                    name="tablerow"
+                    description="HTML code containing field names for your table data. This section will be used to format each row of data fetched from your table."
+                    type="editor"
+                    editor="None"
+                    height="160"
+                    width="800"
+                    default=""
+                    filter="raw"
+                    label="Table Row HTML:" />
+                <field
+                    name="tablefoot"
+                    description="Optional HTML code containing placeholders for your table heading. Do not use field names in this section as they will not be replaced. If left empty, a basic table terminator will be added for you."
+                    type="editor"
+                    editor="None"
+                    height="80"
+                    width="800"
+                    default=""
+                    filter="raw"
+                    label="Table Ending HTML:" />
+            </fieldset>
+        </fields>
+    </config>
+    <install>
+    </install>
+    <uninstall>
+    </uninstall>
+</extension>
