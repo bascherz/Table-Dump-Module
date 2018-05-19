@@ -45,6 +45,9 @@ class ModTableDumpHelper
         {
             $tablehtml = $errormessage;
         }
+        // Replace the special tags.
+        $tablehtml = html_entity_decode(str_replace("{tablerows}",count($records),$tablehtml),ENT_QUOTES);
+        $tablefoot = html_entity_decode(str_replace("{tablerows}",count($records),$tablefoot),ENT_QUOTES);
         if ($records)
         {
             // Iterate over every row in the database recordset returned.
