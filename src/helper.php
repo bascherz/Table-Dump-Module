@@ -29,9 +29,14 @@ class ModTableDumpHelper
         $fieldnames = explode(",",preg_replace("/\s+/",",",$params->get('fieldnames')));
         $tablequery = $params->get('tablequery');
         $errormessage = $params->get('errormessage');
-        $tablehtml = $params->get('tablehead');
+        $tableprefix = $params->get('tableprefix','<table>');
+        $tablehead = $params->get('tablehead');
         $tablerow = $params->get('tablerow');
-        $tablefoot = $params->get('tablefoot');
+        $tablefoot = $params->get('tablefoot','</tbody></table>');
+        $hardspaces = $params->get('hard_spaces');
+        $groupby = trim($params->get('groupby'));
+        $grouphead = $params->get('grouphead');
+        $hard_spaces = $params->get('hard_spaces');
 
         // Prepare the query
         $db->setQuery($tablequery);
@@ -45,28 +50,59 @@ class ModTableDumpHelper
         {
             $tablehtml = $errormessage;
         }
-        // Replace the special tags.
-        $tablehtml = html_entity_decode(str_replace("{tablerows}",count($records),$tablehtml),ENT_QUOTES);
-        $tablefoot = html_entity_decode(str_replace("{tablerows}",count($records),$tablefoot),ENT_QUOTES);
+
+        // Replace tags in rows
+        $lastgroup = "";
+        $thisgrouphead = "";
         if ($records)
         {
             // Iterate over every row in the database recordset returned.
             foreach ($records as $record)
             {
+                // See if we need a group header and if it's time to output one.
+                if ($groupby)
+                {
+                    $thisgroup = $record->$groupby;
+                    $thisgrouphead = "";
+                    if ($thisgroup != $lastgroup)
+                    {
+                        if ($hard_spaces)
+                            $thisgrouphard = html_entity_decode(str_replace(array(" ","-","\n"),array("&nbsp;","&#8209;","<br/>"),$thisgroup),ENT_QUOTES);
+                        else
+                            $thisgrouphard = $thisgroup;
+
+                        $thisgrouphead = html_entity_decode(str_replace("{".$groupby."}",$thisgrouphard,$grouphead),ENT_QUOTES);
+                    }
+                    $lastgroup = $thisgroup;
+                }
+
                 // Get the HTML for the next row ready.
                 $thisrow = $tablerow;
 
                 // Go through the list of field names and replace each {fieldname} in the user-provided HTML for this row.
                 foreach ($fieldnames as $fieldname)
                 {
-                    $thisrow = html_entity_decode(str_replace("{".$fieldname."}",$record->$fieldname,$thisrow),ENT_QUOTES);
+                    $fielddata = $record->$fieldname;
+                    if ($hard_spaces) $fielddata = html_entity_decode(str_replace(array(" ","-","\n"),array("&nbsp;","&#8209;","<br/>"),$fielddata),ENT_QUOTES);
+                    $thisrow = html_entity_decode(str_replace("{".$fieldname."}",$fielddata,$thisrow),ENT_QUOTES);
                 }
                 // Add the processed row to the growing structure.
-                $tablehtml .= $thisrow;
+                $tablehtml .= $thisgrouphead.$thisrow;
             }
         }
+        // Replace the special tags.
+        if ($groupby)
+        {
+            $tablehead = '<table border="2">';
+        }
+        else
+        {
+            $tablehead = html_entity_decode(str_replace("{tablerows}",count($records),$tablehead),ENT_QUOTES);
+        }
+        $tablefoot = html_entity_decode(str_replace("{tablerows}",count($records),$tablefoot),ENT_QUOTES);
+
         // Return the table with all fieldname substitutions made and footer appended.
-        return $tablehtml.($tablefoot ? $tablefoot : "</tbody></table>");
+        return $tableprefix.$tablehead.$tablehtml.($tablefoot ? $tablefoot : "</tbody></table>");
     }
 }
 ?>

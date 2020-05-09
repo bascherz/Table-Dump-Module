@@ -2,7 +2,7 @@
 <extension type="module" version="3.1.0" client="site" method="upgrade">
     <name>Table Dump</name>
     <author>Bruce Scherzinger</author>
-    <version>1.1</version>
+    <version>1.2</version>
     <description>Extracts rows of data from the database and replaces field data in an HTML table structure. A special tag {tablerows} can be placed in either the header or footer and is replaced by the total rows returned by the query.</description>
     <files>
         <filename>mod_tabledump.xml</filename>
@@ -20,6 +20,17 @@
 					type="radio"
 					label="Prepare Content:"
 					description="Optionally prepare the content with the Joomla content plugins. This applies to all HTML; header, rows, and footer."
+					class="btn-group btn-group-yesno"
+					default="0"
+					>
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+					name="hard_spaces"
+					type="radio"
+					label="Hard Spaces:"
+					description="Optionally replace all spaces, hyphens, and newlines with non-breaking HTML entities. This applies only to data in rows."
 					class="btn-group btn-group-yesno"
 					default="0"
 					>
@@ -57,17 +68,46 @@
                     filter="raw"
                     label="Error Message:" />
             </fieldset>
-            <fieldset name="headfoot" label="Head/Foot">
+            <fieldset name="headfoot" label="Head/Foot/Group">
                 <field
-                    name="tablehead"
-                    description="HTML code optionally containing placeholders for your table heading. Do not use field names in this section as they will not be replaced."
+                    name="tableprefix"
+                    description="HTML code for your table prefix. Do not use field names in this section as they will not be replaced. Defaults to plain table."
                     type="editor"
                     editor="None"
-                    height="500"
+                    height="50"
+                    width="1000"
+                    default=""
+                    filter="raw"
+                    label="Table Prefix HTML:" />
+                <field
+                    name="tablehead"
+                    description="HTML code for the actual first row of your table. Do not use field names in this section as they will not be replaced."
+                    type="editor"
+                    editor="None"
+                    height="200"
                     width="1000"
                     default=""
                     filter="raw"
                     label="Table Heading HTML:" />
+                <field
+                    name="groupby"
+                    description="Optional column name for grouping. If left empty, no group sub-headers will appear. Must be a single column name."
+                    type="text"
+                    editor="None"
+                    width="100"
+                    default=""
+                    filter="raw"
+                    label="Group By:" />
+                <field
+                    name="grouphead"
+                    description="HTML code optionally containing placeholders for your group heading. You can use field names in this section."
+                    type="editor"
+                    editor="None"
+                    height="200"
+                    width="1000"
+                    default=""
+                    filter="raw"
+                    label="Group Heading HTML:" />
                 <field
                     name="tablefoot"
                     description="Optional HTML code containing placeholders for your table heading. Do not use field names in this section as they will not be replaced. If left empty, a basic table terminator will be added for you."
@@ -85,7 +125,7 @@
                     description="HTML code containing field names for your table data. This section will be used to format each row of data fetched from your table."
                     type="editor"
                     editor="None"
-                    height="600"
+                    height="300"
                     width="1000"
                     default=""
                     filter="raw"
