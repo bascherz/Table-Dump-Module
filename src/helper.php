@@ -91,7 +91,8 @@ class ModTableDumpHelper
             }
         }
         // Replace the special tags.
-        $tableprefix = html_entity_decode(str_replace("{tablerows}",count($records),$tableprefix),ENT_QUOTES);
+		if (!$groupby)
+			$tableprefix = html_entity_decode(str_replace("{tablerows}",count($records),$tableprefix),ENT_QUOTES);
         $tablefoot = html_entity_decode(str_replace("{tablerows}",count($records),$tablefoot),ENT_QUOTES);
 
         // Return the table with all fieldname substitutions made and footer appended.
