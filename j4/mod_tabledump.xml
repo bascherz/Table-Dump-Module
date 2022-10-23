@@ -136,6 +136,6 @@
     <uninstall>
     </uninstall>
     <updateservers>
-        <server type="extension" name="Table Dump Module Update Site">https://raw.githubusercontent.com/bascherz/Table-Dump-Module/master/manifest.xml</server>
+        <server type="extension" name="Table Dump Module Update Site">https://raw.githubusercontent.com/bascherz/Table-Dump-Module/master/j4/manifest.xml</server>
     </updateservers>
 </extension>
