@@ -2,6 +2,7 @@
 <extension type="module" version="4.0" client="site" method="upgrade">
     <name>Table Dump</name>
     <author>Bruce Scherzinger</author>
+    <creationDate>2022-10-23</creationDate>
     <version>2.0</version>
     <description>Extracts rows of data from the database and replaces field data in an HTML table structure. A special tag {tablerows} can be placed in either the header or footer and is replaced by the total rows returned by the query.</description>
     <namespace path="src">Joomla\Module\TableDump</namespace>
@@ -136,6 +137,6 @@
     <uninstall>
     </uninstall>
     <updateservers>
-        <server type="extension" name="Table Dump Module Update Site">https://raw.githubusercontent.com/bascherz/Table-Dump-Module/master/j4/manifest.xml</server>
+        <server type="extension" name="Table Dump Module Update Site">https://raw.githubusercontent.com/bascherz/Table-Dump-Module/master/manifest.xml</server>
     </updateservers>
 </extension>
